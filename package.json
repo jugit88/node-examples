@@ -1,16 +1,22 @@
 {
-  "name": "js",
+  "name": "node-essentials",
   "version": "1.0.0",
-  "description": "snippets of common node operations",
-  "main": "app.js",
+  "description": "examples of node fundamentals",
+  "main": "callback-exercises.js",
   "scripts": {
-    "start" : "node app",
-		"test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "node-examples"
+    "url": "git+https://github.com/jugit88/node-examples.git"
   },
   "author": "Jeremy Udis",
-  "license": "ISC"
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jugit88/node-examples/issues"
+  },
+  "homepage": "https://github.com/jugit88/node-examples#readme",
+  "dependencies": {
+    "verror": "^1.10.0"
+  }
 }
