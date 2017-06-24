@@ -8,33 +8,19 @@ var client = new elasticsearch.Client({
   host: 'localhost:9200',
   log: 'trace'
 })
-function checkCache(name) {
+exports.checkCache = function(name) {
+  var newName = name.replace(' ','-')
   client.search({
-    index: name
+    index: newName
+    // q: 'match_all'
   }).then(function(resp) {
     var hits = resp.hits
+    return hits
   }, function(err) {
-    console.trace(err.message)
+    makeRequest(name)
+    console.log({'Cache miss': err})
   })
 }
-// function createDocument(name, data) {
-//   var myBody = { index: {_index: name, _type: 'doctor', _id: '1' } }, data
-//   client.bulk({
-//     index: name,
-//     type: 'doctor',
-//     body: myBody
-//   })
-// }
-// client.indices.create({
-//   index: 'charles-anderson'
-// },function(err,resp,status) {
-//   if(err) {
-//     console.log(err);
-//   }
-//   else {
-//     console.log("create",resp);
-//   }
-// });
 function populate(name, data) {
   var newName = name.replace(' ','-')
   client.index({
@@ -46,56 +32,33 @@ function populate(name, data) {
       console.log(resp);
   });
 }
-var totalDoc = []
 
-// function createDocument(name,data) {
-  // var newName = name.replace(' ','-')
-//   client.create({
-//     index: newName,
-//     type: 'doctor',
-//     id: '1',
-//     body: data
-//   })
-// }
-var name = 'charles anderson'
-var skip = 'skip=100&'
-var apikey = KEY
-var encodedPath = encodeURI('/2016-03-01/doctors?name='+name+'&limit=10&user_key='+apikey)
-const options = {
-  hostname: 'api.betterdoctor.com',
-  // port: 80,
-  path: encodedPath
-  // method: 'GET',
-  // headers: {
-  //   'Content-Type': 'application/json'
-  // }
+function makeRequest(name) {
+  var apikey = KEY
+  var encodedPath = encodeURI('/2016-03-01/doctors?name='+name+'&limit=100&user_key='+apikey)
+  const options = {
+    hostname: 'api.betterdoctor.com',
+    path: encodedPath
+  }
+  const req = https.request(options, (res) => {
+    console.log(`STATUS: ${res.statusCode}`)
+    console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
+    var decoder = new StringDecoder('utf8')
+    var str = ''
+    res.on('data', (chunk) =>{
+      var textChunk = decoder.write(chunk)
+      str += chunk
+    })
+    res.on('end', () => {
+      console.log('No more data in response.');
+      // console.log(str)
+      var json = JSON.parse(str)
+      populate(name, {json})
+      return json
+    })
+  })
+  req.on('error', (e) => {
+    console.error(`problem with request: ${e.message}`);
+  });
+  req.end()
 }
-const req = https.request(options, (res) => {
-  console.log(`STATUS: ${res.statusCode}`)
-  console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
-  var decoder = new StringDecoder('utf8')
-  var str = ''
-  res.on('data', (chunk) =>{
-    // console.log(`BODY: ${chunk}`)
-    var textChunk = decoder.write(chunk)
-    str += chunk
-    // str = decoder.write(str)
-    // var text = JSON.parse(textChunk)
-    // console.log(text)
-    // totalDoc.push(textChunk)
-    // console.log(totalDoc.length)
-
-  })
-  res.on('end', () => {
-    console.log('No more data in response.');
-    // console.log(str)
-    var json = JSON.parse(str)
-    populate(name, {json})
-  })
-})
-// populate(name, totalDoc)
-req.on('error', (e) => {
-  console.error(`problem with request: ${e.message}`);
-});
-req.end()
-// console.log(totalDoc)
