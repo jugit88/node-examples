@@ -2,6 +2,7 @@ var express = require('express')
 var requestData = require('./requestData')
 var elasticsearch = require('elasticsearch')
 var https = require('https')
+
 var client = new elasticsearch.Client({
   host: 'localhost:9200',
   log: 'trace'
@@ -10,7 +11,6 @@ var app = express()
 var PORT = process.env.PORT || 3000
 
 // Get all data from database
-
 app.get('/api/v1/doctors/search?:name',function(req,res, next) {
   var name = req.query.name
   console.log(name)
@@ -30,19 +30,20 @@ app.get('/api/v1/doctors/search?:name',function(req,res, next) {
         res.status(200).send(hits)
       }
     }, function(err) {
-      // Name not found in ElasticSearch
+      res.send(500)
       console.log(err)
       })
   }
 })
+// Get data from database pertaining to a specific name
 app.get('/api/v1/doctors/search?:name',function(req,res, next) {
   var name = req.query.name
   if(!name) {
     res.status(400).end('Bad Request')
   }
-  var newName = name.replace(' ','-')
+  var newName = name.toLowerCase()
   client.search({
-    index: newName
+    index: name
   }).then(function(resp) {
     var hits = resp.hits.hits
     res.setHeader('Content-Type', 'application/json')
@@ -50,7 +51,6 @@ app.get('/api/v1/doctors/search?:name',function(req,res, next) {
   }, function(err) {
     // Name not found in ElasticSearch
     console.log({'Cache miss': err})
-    // Move to next middleware function
     next()
   })
 })
@@ -58,7 +58,7 @@ app.get('/api/v1/doctors/search?:name',function(req,res, next) {
 app.get('/api/v1/doctors/search?:name', function(req, res) {
   var name = req.query.name
   // name = name.trim()
-  var apikey = KEY
+  var apikey = 'a5c0a5e5af84a039e45449d289e46f2f'
   var encodedPath = encodeURI('/2016-03-01/doctors?name='+name+'&limit=100&user_key='+apikey)
   const options = {
     hostname: 'api.betterdoctor.com',
@@ -77,7 +77,6 @@ app.get('/api/v1/doctors/search?:name', function(req, res) {
       var payload = JSON.parse(str)
       // populate ElasticSearch database
       requestData.populate(name, {payload})
-      // send header and body to client
       res.setHeader('Content-Type', 'application/json')
       res.status(200).send(str)
     })
@@ -88,13 +87,12 @@ app.get('/api/v1/doctors/search?:name', function(req, res) {
   });
   request.end()
 })
-
 // Catch all for routes not supported
 app.use(function(req, res){
-  console.log({'status': 404})
   res.send(404)
 })
-// Instaniate server listening on localhost:PORT
-app.listen(PORT, function () {
+// Instaniate server listening on PORT
+var server = app.listen(PORT, function () {
   console.log('Listening on port ' + PORT)
 })
+module.exports = server
