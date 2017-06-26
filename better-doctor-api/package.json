@@ -2,8 +2,9 @@
   "name": "betterdoctor-proxyapi",
   "version": "1.0.0",
   "description": "proxy of betterdoctor api",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
+    "start": "node server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Jeremy Udis",
