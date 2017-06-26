@@ -57,8 +57,7 @@ app.get('/api/v1/doctors/search?:name',function(req,res, next) {
 // Make request from betterdoctor API
 app.get('/api/v1/doctors/search?:name', function(req, res) {
   var name = req.query.name
-  // name = name.trim()
-  var apikey = 'a5c0a5e5af84a039e45449d289e46f2f'
+  var apikey = 'KEY'
   var encodedPath = encodeURI('/2016-03-01/doctors?name='+name+'&limit=100&user_key='+apikey)
   const options = {
     hostname: 'api.betterdoctor.com',

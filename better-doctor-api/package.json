@@ -14,6 +14,7 @@
     "express": "^4.15.3"
   },
   "devDependencies": {
+    "assertthat": "^0.10.0",
     "chai": "^4.0.2",
     "chai-http": "^3.0.0"
   }
