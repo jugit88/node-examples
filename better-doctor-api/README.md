@@ -13,4 +13,6 @@ Just start the server per the instructions above and search away. This is the qu
 interact with the proxy. 
 
 #### Dependencies
-This assumes you have a local installation of ElasticSearch confiugured to run on port: 9200
+-This assumes you have a local installation of ElasticSearch confiugured to run on port: 9200
+
+-Mocha
