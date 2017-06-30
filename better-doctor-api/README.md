@@ -15,4 +15,4 @@ interact with the proxy.
 #### Global Dependencies
 - This assumes you have a local installation of ElasticSearch confiugured to run on port: 9200
 
-- Mocha
+- Mocha@3.4.2
