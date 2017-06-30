@@ -12,7 +12,7 @@ searchs would follow `localhost:3000/api/v1/doctors/search?name=<name>` . You ca
 Just start the server per the instructions above and search away. This is the quickest and easiest way to test and 
 interact with the proxy. 
 
-#### Dependencies
--This assumes you have a local installation of ElasticSearch confiugured to run on port: 9200
+#### Global Dependencies
+- This assumes you have a local installation of ElasticSearch confiugured to run on port: 9200
 
--Mocha
+- Mocha
