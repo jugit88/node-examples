@@ -4,12 +4,13 @@ import Viewer from 'viewerjs';
 // var viewer = new Viewer(document.getElementById('images'));
 export default class ImageViewer extends React.Component {
   buildList() {
-    var list = ''
-    for(var i = 0; i < 4; i++) {
-      list += <li key={this.props.id[i]}>
+    // var list = ''
+    const list = this.props.id.map( (curId,i) =>
+      <li key={curId.toString()}>
         <img src={this.props.thumbnailUrl[i]} alt={this.props.title[i]}/>
       </li>
-    }
+    );
+
     return list;
   }
   render() {
