@@ -3,7 +3,6 @@ import React from 'react';
 import ImageViewer from './ImageViewer';
 var fetch = require('node-fetch')
 // var toArray = require('stream-to-array')
-// import { paintingObj } from './dataStore'
 
 class App extends React.Component {
   constructor(props) {
@@ -31,12 +30,14 @@ class App extends React.Component {
       });
   }
   getArt(ids) {
-    fetch('https://appsheettest1.azurewebsites.net/sample/art/'+ids[0])
-      .then(function(res) {
-        return res.json();
-      }).then((json) => {
-        this.addProperties(json);
-      });
+    for(var i = 0; i < 10; i++) {
+      fetch('https://appsheettest1.azurewebsites.net/sample/art/'+ids[i])
+        .then(function(res) {
+          return res.json();
+        }).then((json) => {
+          this.addProperties(json);
+        });
+    }
   }
   addProperties(paintingObject) {
     var artistArr = this.state.artist.concat(paintingObject.artist);
