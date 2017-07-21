@@ -26,9 +26,6 @@
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-image-gallery": "^0.8.3",
-    "react-images": "^0.5.4",
-    "stream-to-array": "^2.3.0",
-    "viewerjs": "^0.7.1",
     "webpack-dev-server": "^2.5.1"
   }
 }

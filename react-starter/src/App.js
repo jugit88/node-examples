@@ -2,15 +2,12 @@
 import React from 'react';
 import ImageViewer from './ImageViewer';
 var fetch = require('node-fetch')
-// var toArray = require('stream-to-array')
 
-// var viewer = new Viewer(document.getElementById('images'));
 
 class App extends React.Component {
-  constructor(props) {
-    super(props)
+  constructor() {
+    super()
     this.state = {
-      // ids: [],
       artist: [],
       id: [],
       year: [],
@@ -21,19 +18,17 @@ class App extends React.Component {
   }
   componentDidMount() {
     this.getIds();
-    // this.getArt();
   }
   getIds() {
     fetch('https://appsheettest1.azurewebsites.net/sample/art')
       .then(function(res) {
         return res.json();
       }).then((idArray) => {
-        // this.setState({ids: json});
         this.getArt(idArray)
       });
   }
   getArt(ids) {
-    for(var i = 0; i < 10; i++) {
+    for(var i = 0; i < 50; i++) {
       fetch('https://appsheettest1.azurewebsites.net/sample/art/'+ids[i])
         .then(function(res) {
           return res.json();
