@@ -4,6 +4,8 @@ import ImageViewer from './ImageViewer';
 var fetch = require('node-fetch')
 // var toArray = require('stream-to-array')
 
+// var viewer = new Viewer(document.getElementById('images'));
+
 class App extends React.Component {
   constructor(props) {
     super(props)
@@ -13,6 +15,7 @@ class App extends React.Component {
       id: [],
       year: [],
       title: [],
+      url: [],
       thumbnailUrl: []
     };
   }
@@ -43,6 +46,7 @@ class App extends React.Component {
     var artistArr = this.state.artist.concat(paintingObject.artist);
     var yearArr = this.state.year.concat(paintingObject.year);
     var idArr = this.state.id.concat(paintingObject.id);
+    var urlArr = this.state.url.concat(paintingObject.url);
     var thumbnailUrlArr = this.state.thumbnailUrl.concat(paintingObject.thumbnailUrl);
     var titleArr = this.state.title.concat(paintingObject.title)
     this.setState({
@@ -50,6 +54,7 @@ class App extends React.Component {
       id: idArr,
       year: yearArr,
       title: titleArr,
+      url: urlArr,
       thumbnailUrl: thumbnailUrlArr
     })
   }
@@ -57,7 +62,7 @@ class App extends React.Component {
     return (
        <div>
           <ImageViewer id={this.state.id} title = {this.state.title} year = {this.state.year}
-          artist = {this.state.artist} thumbnailUrl = {this.state.thumbnailUrl}/>
+          artist = {this.state.artist} thumbnailUrl = {this.state.thumbnailUrl} url={this.state.url} />
        </div>
     );
  }
